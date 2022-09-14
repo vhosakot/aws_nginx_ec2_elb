@@ -61,6 +61,7 @@ Usage: ./deploy.sh [-vpcID VPC_ID] [-subnetID SUBNET_ID]
      - Test using public IP address of EC2 instance by accessing `http://<public IP address of EC2 instance>` and verify that it shows "Cisco SPL"
      - Test using public DNS name of the load balancer by accessing `http://<DNS name of load balancer>` and verify that it shows "Cisco SPL"
      - Make sure that this tool is idempotent - run `deploy.sh` multiple times and verify that resources in AWS are not created if they are already created
+     - Test output is in the files [`test_output.md`](test_output.md) and `test_output.png`
      - Cleanup: This tool does not delete any resource currently so that we can debug if there is an error. To cleanup, delete all the resources manually in the following order in the AWS management web console and rerun `deploy.sh` to provision and test again from scratch:
        - Delete load balancer
        - Delete target group
