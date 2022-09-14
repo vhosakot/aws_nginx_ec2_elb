@@ -14,7 +14,7 @@ aws_secret_access_key = AWS_SECRET_ACCESS_KEY
 region = AWS_REGION
 ```
 
-#### Run the tool
+#### Run the tool to provision load-balanced Nginx web server in AWS
 ```
 ./deploy.sh
 ```
@@ -47,11 +47,12 @@ Usage: ./deploy.sh [-vpcID VPC_ID] [-subnetID SUBNET_ID]
  - Get the public IP address of the EC2 instance
  - Iterations to create load balancer:
      - Create target group and register EC2 instance with target group
+     - Get subnet ID in the availability zone containing the EC2 instance
      - Create application load balancer using EC2 instance's subnet ID
      - Create HTTP listener on TCP port 80 for the load balancer
      - Wait until load balancer reaches `Active` state
      - Get public DNS name of load balancer
- - Iterations to install Nginx web server in EC2 instance using bash and by SSH'ing into the EC2 instance:
+ - Iterations to install Nginx web server in EC2 instance using bash by SSH'ing into the EC2 instance:
      - Update and upgrade Ubuntu apt repos in EC2 instance
      - Install Nginx web server using apt and print its status
      - Add static home page that says "Cisco SPL" for Nginx at `/var/www/html/index.nginx-debian.html` using SCP
