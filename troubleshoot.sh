@@ -14,8 +14,10 @@ set -euxo pipefail
 # Check disk space and delete zipped and old logfiles in /var/log/ to free up disk space
 ssh -i nginx-priv-key.pem ubuntu@$1 "sudo df -h &&
                                      sudo du -sh /*/ | sort -h &&
-                                     sudo apt-get install -y sysstat &&
+                                     sudo sudo fdisk -l &&
+                                     sudo apt-get install -y sysstat iotop &&
                                      sudo iostat &&
+                                     sudo iotop -b -n 1 &&
                                      sudo find /var/log/ -name *.tgz -exec rm -rf {} \; &&
                                      sudo find /var/log/ -name *.gz -exec rm -rf {} \; &&
                                      sudo find /var/log/ -type f -mtime +90 -delete"
@@ -26,7 +28,8 @@ ssh -i nginx-priv-key.pem ubuntu@$1 "sudo free &&
                                      sudo mpstat &&
                                      sudo top -b -n 1 &&
                                      sudo pstree &&
-                                     sudo lsof"
+                                     sudo lsof &&
+                                     sudo cat /proc/sys/vm/swappiness"
 
 # Kill zombie processes
 set +e
@@ -56,6 +59,10 @@ ssh -i nginx-priv-key.pem ubuntu@$1 "sudo systemctl restart nginx &&
 # Remove unwated Ubuntu apt packages to free up disk space
 ssh -i nginx-priv-key.pem ubuntu@$1 "sudo apt-get -y autoremove &&
                                      sudo apt-get -y autoclean"
+
+# Check ulimit
+ssh -i nginx-priv-key.pem ubuntu@$1 "ulimit -a &&
+                                     sudo cat /etc/security/limits.conf"
 
 # Check kernel settings
 ssh -i nginx-priv-key.pem ubuntu@$1 "sudo sysctl -a"
