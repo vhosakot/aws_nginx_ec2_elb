@@ -1,2 +1,4 @@
 __pycache__
 *.pem
+terraform.tfstate
+terraform.tfstate.backup
